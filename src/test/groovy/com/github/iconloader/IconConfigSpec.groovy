@@ -14,14 +14,14 @@ class IconConfigSpec extends Specification {
         def icon = iconConfig.getIcon("icon/icon.png")
 
         then:
-        icon.length() > 0
+        icon.get().length() > 0
     }
 
-    def "Throw FileNotFoundExepection when no icon found"() {
+    def "Empty response when no icon found"() {
         when:
-        iconConfig.getIcon("icorn/icon.png")
+        def icon = iconConfig.getIcon("icorn/icon.png")
 
         then:
-        thrown(FileNotFoundException)
+        !icon.present
     }
 }

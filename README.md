@@ -6,7 +6,7 @@ Loads icon as base64 string from icon/icon.png into 'info.build.icon' property
 
 Gradle
 ```
-compile('com.github.iconloader:icon-loader:0.0.1')
+compile('com.github.iconloader:icon-loader:0.0.2')
 ```
 
 ```

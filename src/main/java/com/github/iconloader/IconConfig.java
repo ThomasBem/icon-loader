@@ -1,5 +1,6 @@
 package com.github.iconloader;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +11,13 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 
 import javax.annotation.PostConstruct;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.Properties;
 
+@Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 public class IconConfig {
@@ -28,23 +30,25 @@ public class IconConfig {
 
     @PostConstruct
     public void init() throws IOException {
-        String icon = getIcon(ICON_PATH);
+        Optional<String> icon = getIcon(ICON_PATH);
+        if(icon.isPresent()) {
+            Properties properties = new Properties();
+            properties.put("info.build.icon", icon.get());
+            PropertiesPropertySource source = new PropertiesPropertySource("icon", properties);
 
-        Properties properties = new Properties();
-        properties.put("info.build.icon", icon);
-        PropertiesPropertySource source = new PropertiesPropertySource("icon", properties);
-
-        MutablePropertySources propertySources = env.getPropertySources();
-        propertySources.addFirst(source);
+            MutablePropertySources propertySources = env.getPropertySources();
+            propertySources.addFirst(source);
+        }
     }
 
-    String getIcon(String iconPath) throws IOException {
+    Optional<String> getIcon(String iconPath) throws IOException {
         InputStream resource = IconConfig.class.getClassLoader().getResourceAsStream(iconPath);
-        if(resource == null) {
-            throw new FileNotFoundException("Could not find icon/icon.png in src/main/resources");
+        if (resource == null) {
+            log.warn("Could not find icon/icon.png in src/main/resources");
+            return Optional.empty();
         }
 
         byte[] bytes = IOUtils.toByteArray(resource);
-        return String.format("%s%s", IMAGE_PREFIX, Base64.getEncoder().encodeToString(bytes));
+        return Optional.of(String.format("%s%s", IMAGE_PREFIX, Base64.getEncoder().encodeToString(bytes)));
     }
 }
