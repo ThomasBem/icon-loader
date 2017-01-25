@@ -1,5 +1,7 @@
 # Icon-Loader
 
+[![Build Status](https://travis-ci.org/ThomasBem/icon-loader.svg?branch=master)](https://travis-ci.org/ThomasBem/icon-loader)
+
 Loads icon as base64 string from icon/icon.png into 'info.build.icon' property
  
 ## Installation
