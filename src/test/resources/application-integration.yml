@@ -1,0 +1,4 @@
+eureka:
+ instance:
+  metadataMap:
+   icon: ${info.build.icon}
