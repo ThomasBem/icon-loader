@@ -5,7 +5,7 @@
 
 	<groupId>com.github.iconloader</groupId>
 	<artifactId>icon-loader</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>icon-loader</name>
